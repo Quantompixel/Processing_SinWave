@@ -8,7 +8,7 @@ void setup() {
 
   //Groesse eines Wuerfels in der Wave, Hoehe der Wave, Y-Position der Wave, Geschwindigkeit mit der sich eine Welle bewegt, Laenge einer Welle, Startfarbe eines Fades(rechts), Endfarbe eines Fades
 
-  createWave(13, 100, height/2, (double)-0.05, (double)0.07, new Vector3(255, 0, 0), new Vector3(101, 0, 101));
+  createWave(13, 100, height/2, (double)-0.05, (double)0.07, new Vector3(255, 0, 0), new Vector3(0, 0, 101));
 }
 
 
@@ -28,7 +28,7 @@ void createWave(int quadSize, int waveHeight, int wavePosY, double velocity, dou
 
   Vector2 pos = new Vector2(0-quadSize/2, height/2);
   double radians = 0;
-  int numOfQuads = width/quadSize;
+  int numOfQuads = width/quadSize +1;
   ArrayList<Vector3> colourList = colorFade(startClr, endClr, numOfQuads);
 
   int i = 0;
@@ -36,10 +36,10 @@ void createWave(int quadSize, int waveHeight, int wavePosY, double velocity, dou
   while (pos.x < width - quadSize/2) {
     radians += frequency;
 
-    //quads.add(new Quad(new Vector2(pos.x, pos.y), radians, velocity, quadSize, waveHeight, wavePosY, colourList.get(i)));
+    quads.add(new Quad(new Vector2(pos.x, pos.y), radians, velocity, quadSize, waveHeight, wavePosY, colourList.get(i)));
 
     pos.x += quadSize;
-
+    
     i++;
   }
 }
@@ -49,9 +49,35 @@ ArrayList colorFade(Vector3 start, Vector3 end, int numOfQuads) {
 
   ArrayList<Vector3> fade = new ArrayList<Vector3>();
 
-  Vector3 stepSize;
+  Vector3 stepSize = new Vector3(0,0,0);
+  Vector3 stepsNeeded = getDif(start,end);
+  
+  stepSize.x = stepsNeeded.x/numOfQuads;
+  stepSize.y = stepsNeeded.y/numOfQuads;
+  stepSize.z = stepsNeeded.z/numOfQuads;
+  
+  Vector3 cur = start;
+  
   
   for (int i=0; i<numOfQuads; i++) {
+     if (cur.x < end.x) {
+       cur.x += stepSize.x;
+     } else {
+       cur.x-= stepSize.x;
+     }
+     if (cur.y < end.y) {
+       cur.y += stepSize.y;
+     } else {
+       cur.y -= stepSize.y;
+     }
+     if (cur.z < end.z) {
+       cur.z += stepSize.z;
+     } else {
+       cur.z -= stepSize.z;
+     }
+     
+     Vector3 value = new Vector3(cur.x, cur.y, cur.z);
+     fade.add(value);
   }
 
   return fade;
@@ -80,50 +106,6 @@ Vector3 getDif(Vector3 val1, Vector3 val2) {
   } else {
     dif.z = val1.z - val2.z;
   }
-
+  
   return dif;
 }
-
-
-/*
-  float stepsNeeded;
- if(start.getMin()<end.getMin()){
- stepsNeeded = start.getMin() + end.getMax();
- }
- else if(start.getMax()<end.getMax()){
- stepsNeeded = start.getMax() + end.getMax();
- }
- else{
- stepsNeeded = end.getMin() + start.getMax();
- }
- 
- float f = stepsNeeded/steps;
- 
- Vector3 c = start;
- 
- for (int i=0; i<300; i++) {
- Vector3 wert;
- 
- if (c.x < end.x) {
- c.x+=f;
- } else {
- c.x-=f;
- }
- if (c.y < end.y) {
- c.y+=f;
- } else {
- c.y-=f;
- }
- if (c.z < end.z) {
- c.z+=f;
- } else {
- c.z-=f;
- }
- 
- //println(i+"  :  "+c.x + "," + c.y + "," + c.z);
- 
- wert = new Vector3(c.x, c.y, c.z);
- 
- fade.add(wert);
- }
- */
