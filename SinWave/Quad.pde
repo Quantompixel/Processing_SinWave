@@ -1,13 +1,13 @@
 class Quad {
-  Vector2 pos = new Vector2(0, 0);
+  PVector pos = new PVector(0, 0);
   double radians;
   double velocity;
   int size;
   int waveHeight;
   int wavePosY;
-  Vector3 colour;
+  PVector colour;
 
-  public Quad(Vector2 pos, double rad, double vel, int size, int waveHeight, int wavePosY, Vector3 colour) {
+  public Quad(PVector pos, double rad, double vel, int size, int waveHeight, int wavePosY, PVector colour) {
     this.pos = pos;
     this.radians = rad;
     this.velocity = vel;
@@ -20,7 +20,7 @@ class Quad {
   public void moveQuad() {
     this.radians += velocity;
 
-    this.pos.y = wavePosY + Math.sin(this.radians) * waveHeight;
+    this.pos.y = (float)(wavePosY + Math.sin(this.radians) * waveHeight);
 
     fill(colour.x, colour.y, colour.z);
     rect((float)this.pos.x, (float)this.pos.y, this.size, this.size);

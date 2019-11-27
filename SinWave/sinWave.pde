@@ -8,7 +8,7 @@ void setup() {
 
   //Groesse eines Wuerfels in der Wave, Hoehe der Wave, Y-Position der Wave, Geschwindigkeit mit der sich eine Welle bewegt, Laenge einer Welle, Startfarbe eines Fades(rechts), Endfarbe eines Fades
 
-  createWave(13, 100, height/2, (double)-0.05, (double)0.07, new Vector3(255, 0, 0), new Vector3(0, 0, 101));
+  createWave(13, 100, height/2, (double)-0.05, (double)0.07, new PVector(255, 0, 0), new PVector(0, 0, 101));
 }
 
 
@@ -24,19 +24,19 @@ void draw() {
 
 
 
-void createWave(int quadSize, int waveHeight, int wavePosY, double velocity, double frequency, Vector3 startClr, Vector3 endClr) {
+void createWave(int quadSize, int waveHeight, int wavePosY, double velocity, double frequency, PVector startClr, PVector endClr) {
 
-  Vector2 pos = new Vector2(0-quadSize/2, height/2);
+  PVector pos = new PVector(0-quadSize/2, height/2);
   double radians = 0;
   int numOfQuads = width/quadSize +1;
-  ArrayList<Vector3> colourList = colorFade(startClr, endClr, numOfQuads);
+  ArrayList<PVector> colourList = colorFade(startClr, endClr, numOfQuads);
 
   int i = 0;
 
   while (pos.x < width - quadSize/2) {
     radians += frequency;
 
-    quads.add(new Quad(new Vector2(pos.x, pos.y), radians, velocity, quadSize, waveHeight, wavePosY, colourList.get(i)));
+    quads.add(new Quad(new PVector(pos.x, pos.y), radians, velocity, quadSize, waveHeight, wavePosY, colourList.get(i)));
 
     pos.x += quadSize;
     
@@ -45,18 +45,18 @@ void createWave(int quadSize, int waveHeight, int wavePosY, double velocity, dou
 }
 
 
-ArrayList colorFade(Vector3 start, Vector3 end, int numOfQuads) {
+ArrayList colorFade(PVector start, PVector end, int numOfQuads) {
 
-  ArrayList<Vector3> fade = new ArrayList<Vector3>();
+  ArrayList<PVector> fade = new ArrayList<PVector>();
 
-  Vector3 stepSize = new Vector3(0,0,0);
-  Vector3 stepsNeeded = getDif(start,end);
+  PVector stepSize = new PVector(0,0,0);
+  PVector stepsNeeded = getDif(start,end);
   
   stepSize.x = stepsNeeded.x/numOfQuads;
   stepSize.y = stepsNeeded.y/numOfQuads;
   stepSize.z = stepsNeeded.z/numOfQuads;
   
-  Vector3 cur = start;
+  PVector cur = start;
   
   
   for (int i=0; i<numOfQuads; i++) {
@@ -76,7 +76,7 @@ ArrayList colorFade(Vector3 start, Vector3 end, int numOfQuads) {
        cur.z -= stepSize.z;
      }
      
-     Vector3 value = new Vector3(cur.x, cur.y, cur.z);
+     PVector value = new PVector(cur.x, cur.y, cur.z);
      fade.add(value);
   }
 
@@ -84,9 +84,9 @@ ArrayList colorFade(Vector3 start, Vector3 end, int numOfQuads) {
 }
 
 
-Vector3 getDif(Vector3 val1, Vector3 val2) {
+PVector getDif(PVector val1, PVector val2) {
 
-  Vector3 dif = new Vector3(0, 0, 0);
+  PVector dif = new PVector(0, 0, 0);
 
   if (val1.x < val2.x) {
     dif.x = val2.x - val1.x;
